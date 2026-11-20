@@ -1,6 +1,14 @@
 # Antigravity Theme Addon（船板 v5.5.2+ 视觉精修与上下文圆环扩展包）
 
-> 🤖 **最懒安装方式（直接丢给 AI 搞定）**：直接把本仓库链接 `https://github.com/JaffryGao/antigravity-theme-addon` 发给 Antigravity / Claude Code，说一句 **“按仓库里的 `SKILL.md` 帮我安装”**，AI 会自动检测你的本机状态（未装原版 / 老版 `< 5.3.0` / 已装 `>= 5.3.0`）并全自动搞定安装与验收！
+### 🤖 懒人安装方式（复制下面这句话直接发给 AI 即可）
+
+```text
+请读取 https://github.com/JaffryGao/antigravity-theme-addon 仓库里的 SKILL.md，帮我自动安装这个 Antigravity 主题扩展包。
+```
+
+> AI 会自动检测你的本机状态（未装原版 / 老版 `< 5.3.0` / 已装 `>= 5.3.0`）并全自动完成安装与验收，支持 Antigravity / Claude Code / Codex。
+
+---
 
 面向 [**Anarcadia/chuanban-antigravity-theme-patch**](https://github.com/Anarcadia/chuanban-antigravity-theme-patch)（`v5.3.0+` / `v5.5.2+`）的个人无侵入 `user/` 改装层组合包。
 

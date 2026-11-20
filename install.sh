@@ -2,8 +2,12 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TARGET_USER_DIR="$HOME/.gemini/antigravity/theme-patch/user"
+BASE_DIR="$HOME/.gemini/antigravity/theme-patch"
+TARGET_USER_DIR="$BASE_DIR/user"
+UPSTREAM_REPO="https://github.com/Anarcadia/chuanban-antigravity-theme-patch.git"
+
 KEEP_CONFIG=0
+UPGRADE_CORE=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -11,9 +15,14 @@ while [[ $# -gt 0 ]]; do
       KEEP_CONFIG=1
       shift
       ;;
+    --upgrade-core)
+      UPGRADE_CORE=1
+      shift
+      ;;
     -h|--help)
-      echo "Usage: ./install.sh [--keep-config]"
-      echo "  --keep-config  Keep your existing user/config.json instead of applying default high-contrast + claude-warm"
+      echo "Usage: ./install.sh [options]"
+      echo "  --keep-config   保留本机已有的 user/config.json"
+      echo "  --upgrade-core  即使本机已安装船板原版，也重新拉取最新上游内核升级"
       exit 0
       ;;
     *)
@@ -23,14 +32,32 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ ! -d "$HOME/.gemini/antigravity/theme-patch" ]]; then
-  echo "[addon] 未检测到 ~/.gemini/antigravity/theme-patch" >&2
-  echo "[addon] 请先安装上游框架: https://github.com/Anarcadia/chuanban-antigravity-theme-patch" >&2
-  exit 1
+# 1. 自动检测并安装/升级上游船板补丁
+if [[ ! -f "$BASE_DIR/install.mjs" || "$UPGRADE_CORE" -eq 1 ]]; then
+  if ! command -v node >/dev/null 2>&1; then
+    echo "[addon] ERROR: 需要 Node.js >= 22.13.0，请先安装 Node.js。" >&2
+    exit 1
+  fi
+  if ! command -v git >/dev/null 2>&1; then
+    echo "[addon] ERROR: 需要 git 以自动拉取上游船板补丁。" >&2
+    exit 1
+  fi
+
+  TMP_UPSTREAM="$(mktemp -d -t chuanban_upstream_XXXXXX)"
+  trap 'rm -rf "$TMP_UPSTREAM"' EXIT
+
+  echo "[addon] 正在自动拉取最新上游船板补丁 (Anarcadia/chuanban-antigravity-theme-patch)..."
+  GIT_CONFIG_GLOBAL=/dev/null git clone --depth 1 "$UPSTREAM_REPO" "$TMP_UPSTREAM"
+
+  echo "[addon] 正在安装上游船板内核与后台守护进程..."
+  (cd "$TMP_UPSTREAM" && node install.mjs install)
+else
+  echo "[addon] 已检测到本机船板补丁 ($BASE_DIR)，跳过上游安装（如需升级可加 --upgrade-core）。"
 fi
 
+# 2. 备份并部署本仓库精修 user/ 层
 if [[ -d "$TARGET_USER_DIR" ]]; then
-  BACKUP_DIR="$HOME/.gemini/antigravity/theme-patch/user.bak.$(date +%Y%m%d%H%M%S)"
+  BACKUP_DIR="$BASE_DIR/user.bak.$(date +%Y%m%d%H%M%S)"
   cp -R "$TARGET_USER_DIR" "$BACKUP_DIR"
   echo "[addon] 已备份原 user/ 目录至: $BACKUP_DIR"
 else
@@ -48,4 +75,5 @@ else
   echo "[addon] 已保留原有的 config.json"
 fi
 
-echo "[addon] 部署完成！船板后台守护进程将在 2.5 秒内自动热重载生效（无需重启 Antigravity）。"
+echo "[addon] 部署完成！船板守护进程将在 2.5 秒内自动热重载生效。"
+echo "[addon] 提示：若需完整书卷字体排版，可执行: brew install --cask font-sarasa-gothic"

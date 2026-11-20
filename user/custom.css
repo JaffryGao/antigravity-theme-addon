@@ -717,3 +717,70 @@ body.dark .select-text :not(pre) > code {
   margin: 0 1.5px !important;
   border-radius: 4px !important;
 }
+
+/* ============================================================================
+ * 胶囊仪表盘底栏：白天/黑夜主题一键快捷切换条
+ * ============================================================================ */
+#ag-live-metrics-tooltip .ag-ctx-theme-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(120, 113, 108, 0.22);
+}
+
+#ag-live-metrics-tooltip .ag-ctx-theme-lbl {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.72;
+  flex-shrink: 0;
+}
+
+#ag-live-metrics-tooltip .ag-ctx-theme-btns {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+#ag-live-metrics-tooltip .ag-ctx-theme-btn {
+  appearance: none;
+  border: 1px solid rgba(120, 113, 108, 0.24);
+  background: rgba(120, 113, 108, 0.06);
+  color: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.25;
+  padding: 3px 8px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+#ag-live-metrics-tooltip .ag-ctx-theme-btn:hover {
+  background: rgba(120, 113, 108, 0.14);
+  border-color: rgba(120, 113, 108, 0.42);
+}
+
+#ag-live-metrics-tooltip .ag-ctx-theme-btn.is-active {
+  background: var(--ag-ctx-bg);
+  border-color: var(--ag-ctx-accent);
+  color: var(--ag-ctx-fg);
+  font-weight: 600;
+}
+
+:is(html[data-ag-theme-mode="dark"] body, body.dark, body.theme-dark) #ag-live-metrics-tooltip .ag-ctx-theme-bar {
+  border-top-color: rgba(255, 255, 255, 0.12);
+}
+
+:is(html[data-ag-theme-mode="dark"] body, body.dark, body.theme-dark) #ag-live-metrics-tooltip .ag-ctx-theme-btn {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+:is(html[data-ag-theme-mode="dark"] body, body.dark, body.theme-dark) #ag-live-metrics-tooltip .ag-ctx-theme-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+}

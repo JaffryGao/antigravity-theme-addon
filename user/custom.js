@@ -288,8 +288,90 @@
       `  </div>`,
       footRows.length > 0 ? `  <div class="ag-ctx-foot">${footRows.join('')}</div>` : '',
       m.warnHtml || '',
+      `  ${buildThemeSwitcherHtml()}`,
       `</div>`
     ].join('');
+  }
+
+  const LIGHT_PRESETS = [
+    { id: 'high-contrast', label: '书卷暖白' },
+    { id: 'claude-desktop-purewhite', label: 'Claude 净白' },
+    { id: 'vintage-deep', label: '复古羊皮纸' }
+  ];
+
+  const DARK_PRESETS = [
+    { id: 'claude-warm', label: '暖纸深夜' },
+    { id: 'onyx', label: '官方冷黑' }
+  ];
+
+  function isDarkModeNow() {
+    return (
+      document.documentElement.getAttribute('data-ag-theme-mode') === 'dark' ||
+      (document.body && (document.body.classList.contains('dark') || document.body.classList.contains('theme-dark')))
+    );
+  }
+
+  function getActiveLightPreset() {
+    return (
+      document.documentElement.getAttribute('data-ag-preset') ||
+      (function () {
+        try { return localStorage.getItem('theme-color-flavor'); } catch (_) { return ''; }
+      })() ||
+      (ctx && ctx.preset) ||
+      'high-contrast'
+    );
+  }
+
+  function getActiveDarkPreset() {
+    return (
+      document.documentElement.getAttribute('data-ag-dark-preset') ||
+      (function () {
+        try { return localStorage.getItem('theme-dark-flavor'); } catch (_) { return ''; }
+      })() ||
+      (ctx && ctx.config && ctx.config.darkPreset) ||
+      'claude-warm'
+    );
+  }
+
+  function buildThemeSwitcherHtml() {
+    const dark = isDarkModeNow();
+    const list = dark ? DARK_PRESETS : LIGHT_PRESETS;
+    const activeId = dark ? getActiveDarkPreset() : getActiveLightPreset();
+    const kind = dark ? 'dark' : 'light';
+    const title = dark ? '黑夜主题' : '白天主题';
+    const btns = list
+      .map((item) => {
+        const cls = item.id === activeId ? 'ag-ctx-theme-btn is-active' : 'ag-ctx-theme-btn';
+        return `<button type="button" class="${cls}" data-ag-switch-kind="${kind}" data-ag-switch-val="${item.id}">${escHtml(item.label)}</button>`;
+      })
+      .join('');
+    return `<div class="ag-ctx-theme-bar"><span class="ag-ctx-theme-lbl">${title}</span><div class="ag-ctx-theme-btns">${btns}</div></div>`;
+  }
+
+  function applyThemePresetSwitch(kind, val) {
+    try {
+      if (kind === 'light') {
+        localStorage.setItem('theme-color-flavor', val);
+        document.documentElement.setAttribute('data-ag-preset', val);
+        if (typeof ctx.syncPreset === 'function') ctx.syncPreset();
+      } else if (kind === 'dark') {
+        localStorage.setItem('theme-dark-flavor', val);
+        document.documentElement.setAttribute('data-ag-dark-preset', val);
+        if (typeof window.__ag_set_dark_preset_fn === 'function') {
+          window.__ag_set_dark_preset_fn(val);
+        } else if (typeof ctx.syncPreset === 'function') {
+          ctx.syncPreset();
+        }
+      }
+      const tt = document.getElementById('ag-live-metrics-tooltip');
+      if (tt) {
+        tt.querySelectorAll('.ag-ctx-theme-btn').forEach((btn) => {
+          btn.classList.toggle('is-active', btn.getAttribute('data-ag-switch-val') === val);
+        });
+      }
+    } catch (err) {
+      console.error('[Antigravity Theme Switch] Error:', err);
+    }
   }
 
   function positionTooltip(pill, tt) {
@@ -341,6 +423,15 @@
       e.preventDefault();
       e.stopPropagation();
       setPinned(false);
+      return;
+    }
+    const themeBtn = target.closest('#ag-live-metrics-tooltip .ag-ctx-theme-btn');
+    if (themeBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      const kind = themeBtn.getAttribute('data-ag-switch-kind');
+      const val = themeBtn.getAttribute('data-ag-switch-val');
+      if (kind && val) applyThemePresetSwitch(kind, val);
       return;
     }
     const pill = target.closest('#ag-live-metrics-pill');

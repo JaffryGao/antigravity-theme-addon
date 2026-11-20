@@ -8,9 +8,11 @@
 
 ## ✨ 包含特性
 
-1. **推荐昼夜双模配置（`user/config.json`）**
-   - 白天默认 `high-contrast`（高对比书卷暖白）
-   - 黑夜默认 `claude-warm`（Claude 暖纸深夜，可在设置外观点击 📖 切换）
+1. **胶囊面板内置主题一键切换（0ms 热切换 + 自动记忆）**
+   - 点击/悬停底栏上下文圆环胶囊，弹出卡片最底部新增快捷切换条：
+     - **白天模式**：`书卷暖白` ｜ `Claude 净白` ｜ `复古羊皮纸`
+     - **黑夜模式**：`暖纸深夜` ｜ `官方冷黑`
+   - 纯调用原版 `localStorage` 与 `ctx.syncPreset()` 接口，**零改动 `core/` 内核**，点一下立即切换并持久化记住。
 2. **可视化上下文容量圆环 + 分段仪表盘（`user/custom.js` + `user/custom.css`）**
    - 输入框底栏纯文本升级为 **SVG 环形进度条胶囊** + 精简速度/输出显示。
    - 按占用率自动切换 **四档健康色**（`<50%` 绿 / `50–74%` 琥珀 / `75–89%` 橙 / `≥90%` 红）。
@@ -46,30 +48,24 @@
 
 ---
 
-## 📦 新机一键部署指南（macOS / Linux）
+## 📦 一键部署指南（macOS / Linux，全自动一步到位）
 
-### 第一步：安装底层船板补丁（如已安装可跳过）
-```bash
-git clone --depth 1 https://github.com/Anarcadia/chuanban-antigravity-theme-patch.git
-cd chuanban-antigravity-theme-patch
-node install.mjs install
-```
-*(建议按上游 README 补齐 Anthropic Serif / Mono 与更纱黑体字体，以获得完整排版体验。)*
+> **开箱即用**：`install.sh` 会自动检测本机是否已装船板原版；**如果没装，会自动从 GitHub 拉取最新版 `chuanban-antigravity-theme-patch` 完成安装**，然后再自动叠加本仓库的 `user/` 精修扩展。
 
-### 第二步：一键叠加本扩展包
 ```bash
 git clone --depth 1 https://github.com/JaffryGao/antigravity-theme-addon.git
 cd antigravity-theme-addon
 chmod +x install.sh uninstall.sh
 
-# 默认安装（自动备份原 user/ 并应用推荐的 high-contrast + claude-warm 配置）
+# 一键全自动安装（自动补装上游原版 + 叠加本扩展）
 ./install.sh
 
-# 如希望保留你现有的 config.json，仅叠加样式与圆环插件：
-./install.sh --keep-config
+# 可选参数：
+./install.sh --keep-config    # 保留你现有的 config.json
+./install.sh --upgrade-core   # 顺便拉取最新上游船板内核升级
 ```
 
-等待 **2.5 秒** 即可自动热重载生效，无需重启 Antigravity。
+等待 **2.5 秒** 即可自动热重载生效。*(首次在新电脑上安装后，如 Antigravity 正在运行，退出重开一次即可由 M2 自动接力生效。)*
 
 ### 卸载还原
 ```bash

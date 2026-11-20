@@ -719,68 +719,37 @@ body.dark .select-text :not(pre) > code {
 }
 
 /* ============================================================================
- * 胶囊仪表盘底栏：白天/黑夜主题一键快捷切换条
+ * 外观设置原生胶囊 6 键排序与高亮联动（零改动 core/）
+ * 排布：跟随系统(1) | 书卷暖白(2) | Claude 净白(3) | 复古羊皮纸(4) | 暖纸深夜(5) | 官方冷黑(6)
  * ============================================================================ */
-#ag-live-metrics-tooltip .ag-ctx-theme-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px dashed rgba(120, 113, 108, 0.22);
+[data-slot="toggle-group"][data-ag-theme-toggle-group="1"] > button[data-ag-native-theme-slot="system"] {
+  order: 1 !important;
+}
+[data-slot="toggle-group"][data-ag-theme-toggle-group="1"] > button[data-ag-native-theme-slot="light"] {
+  order: 2 !important;
+}
+[data-slot="toggle-group"][data-ag-theme-toggle-group="1"] > button[data-ag-light-extra-btn="claude-desktop-purewhite"] {
+  order: 3 !important;
+}
+[data-slot="toggle-group"][data-ag-theme-toggle-group="1"] > button[data-ag-light-extra-btn="vintage-deep"] {
+  order: 4 !important;
+}
+[data-slot="toggle-group"][data-ag-theme-toggle-group="1"] > button[data-ag-warm-night-btn="1"] {
+  order: 5 !important;
+}
+[data-slot="toggle-group"][data-ag-theme-toggle-group="1"] > button[data-ag-native-theme-slot="dark"] {
+  order: 6 !important;
 }
 
-#ag-live-metrics-tooltip .ag-ctx-theme-lbl {
-  font-size: 11px;
-  font-weight: 500;
-  opacity: 0.72;
-  flex-shrink: 0;
+/* 当选中新增的两套白天主题时，隐藏原生太阳按钮的高亮，将选中态交给当前白天预设按钮 */
+body[data-agy-theme] [data-slot="toggle-group"][data-ag-theme-toggle-group="1"][data-ag-active-light] > button[data-ag-native-theme-slot="light"][data-pressed],
+[data-slot="toggle-group"][data-ag-theme-toggle-group="1"][data-ag-active-light] > button[data-ag-native-theme-slot="light"][data-pressed] {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--secondary-foreground) !important;
 }
 
-#ag-live-metrics-tooltip .ag-ctx-theme-btns {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-#ag-live-metrics-tooltip .ag-ctx-theme-btn {
-  appearance: none;
-  border: 1px solid rgba(120, 113, 108, 0.24);
-  background: rgba(120, 113, 108, 0.06);
-  color: inherit;
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 1.25;
-  padding: 3px 8px;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-#ag-live-metrics-tooltip .ag-ctx-theme-btn:hover {
-  background: rgba(120, 113, 108, 0.14);
-  border-color: rgba(120, 113, 108, 0.42);
-}
-
-#ag-live-metrics-tooltip .ag-ctx-theme-btn.is-active {
-  background: var(--ag-ctx-bg);
-  border-color: var(--ag-ctx-accent);
-  color: var(--ag-ctx-fg);
-  font-weight: 600;
-}
-
-:is(html[data-ag-theme-mode="dark"] body, body.dark, body.theme-dark) #ag-live-metrics-tooltip .ag-ctx-theme-bar {
-  border-top-color: rgba(255, 255, 255, 0.12);
-}
-
-:is(html[data-ag-theme-mode="dark"] body, body.dark, body.theme-dark) #ag-live-metrics-tooltip .ag-ctx-theme-btn {
-  border-color: rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.06);
-}
-
-:is(html[data-ag-theme-mode="dark"] body, body.dark, body.theme-dark) #ag-live-metrics-tooltip .ag-ctx-theme-btn:hover {
-  background: rgba(255, 255, 255, 0.14);
+body[data-agy-theme] [data-slot="toggle-group"][data-ag-theme-toggle-group="1"][data-ag-active-light] > button[data-ag-native-theme-slot="light"][data-pressed]:hover,
+[data-slot="toggle-group"][data-ag-theme-toggle-group="1"][data-ag-active-light] > button[data-ag-native-theme-slot="light"][data-pressed]:hover {
+  color: var(--foreground) !important;
 }

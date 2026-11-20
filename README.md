@@ -16,6 +16,18 @@
 
 ---
 
+## 🖼️ 实机效果预览
+
+| ☀️ 书卷暖白（`high-contrast`） | ✨ Claude 净白（`claude-desktop-purewhite`） |
+| :---: | :---: |
+| ![书卷暖白](assets/theme-high-contrast.png) | ![Claude 净白](assets/theme-claude-purewhite.png) |
+| **📜 复古羊皮纸（`vintage-deep`）** | **📖 暖纸深夜（`claude-warm`）** |
+| ![复古羊皮纸](assets/theme-vintage-deep.png) | ![暖纸深夜](assets/theme-claude-warm.png) |
+| **🌙 官方冷黑（`onyx`）** | **⚙️ 主题设置（6 键切换胶囊）** |
+| ![官方冷黑](assets/theme-onyx.png) | ![主题设置](assets/settings-6-buttons.png) |
+
+---
+
 ## ✨ 包含特性
 
 1. **「设置 → 外观 → 主题」原生胶囊 6 键扩展（放出全部白天主题）**

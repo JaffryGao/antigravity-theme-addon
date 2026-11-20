@@ -1,6 +1,8 @@
 # Antigravity Theme Addon（船板 v5.5.2+ 视觉精修与上下文圆环扩展包）
 
-面向 [**Anarcadia/chuanban-antigravity-theme-patch**](https://github.com/Anarcadia/chuanban-antigravity-theme-patch)（`v5.5.2+`）的个人无侵入 `user/` 改装层组合包。
+> 🤖 **最懒安装方式（直接丢给 AI 搞定）**：直接把本仓库链接 `https://github.com/JaffryGao/antigravity-theme-addon` 发给 Antigravity / Claude Code，说一句 **“按仓库里的 `SKILL.md` 帮我安装”**，AI 会自动检测你的本机状态（未装原版 / 老版 `< 5.3.0` / 已装 `>= 5.3.0`）并全自动搞定安装与验收！
+
+面向 [**Anarcadia/chuanban-antigravity-theme-patch**](https://github.com/Anarcadia/chuanban-antigravity-theme-patch)（`v5.3.0+` / `v5.5.2+`）的个人无侵入 `user/` 改装层组合包。
 
 零修改上游 `core/` 内核、不触碰客户端 `.asar` 与系统签名；安装后由船板守护进程在 **2.5 秒内热重载生效**，上游升级时 `user/` 层自动保留不被覆盖。
 
@@ -50,7 +52,10 @@
 
 ## 📦 一键部署指南（macOS / Linux，全自动一步到位）
 
-> **开箱即用**：`install.sh` 会自动检测本机是否已装船板原版；**如果没装，会自动从 GitHub 拉取最新版 `chuanban-antigravity-theme-patch` 完成安装**，然后再自动叠加本仓库的 `user/` 精修扩展。
+> **智能检测逻辑**：运行 `./install.sh` 时会自动检测本机环境与 `~/.gemini/antigravity/theme-patch` 状态：
+> - **未安装原版船板**：自动从 GitHub 拉取最新 `Anarcadia/chuanban-antigravity-theme-patch` 并完成安装（自动检测本机 Antigravity 客户端并注册后台守护进程），随后自动叠加本扩展。
+> - **已安装原版但版本 `< 5.3.0`**：自动拉取最新上游船板内核升级后再叠加本扩展，确保兼容。
+> - **已安装原版且版本 `>= 5.3.0`**：保留现有上游内核不动，仅自动备份原 `user/` 目录并写入本扩展（2.5 秒热重载生效）。
 
 ```bash
 git clone --depth 1 https://github.com/JaffryGao/antigravity-theme-addon.git

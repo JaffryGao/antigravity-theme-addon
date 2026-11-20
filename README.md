@@ -6,7 +6,7 @@
 请读取 https://github.com/JaffryGao/antigravity-theme-addon 仓库里的 SKILL.md，帮我自动安装这个 Antigravity 主题扩展包。
 ```
 
-> AI 会自动检测你的本机状态（未装原版 / 老版 `< 5.3.0` / 已装 `>= 5.3.0`）并全自动完成安装与验收，支持 Antigravity / Claude Code / Codex。
+> AI 会自动检测你的本机状态（未装原版 / 老版 `< 5.3.0` / 已装 `>= 5.3.0`）并全自动完成安装与验收。
 
 ---
 
